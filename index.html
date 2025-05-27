@@ -2,837 +2,754 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masti Coins</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Masti Coins - Kamao Aur Haso!</title>
     <style>
+        :root {
+            --primary-color: #007bff; /* Blue */
+            --secondary-color: #6c757d; /* Gray */
+            --success-color: #28a745; /* Green */
+            --warning-color: #ffc107; /* Yellow */
+            --danger-color: #dc3545; /* Red */
+            --light-bg: #f8f9fa;
+            --dark-text: #343a40;
+            --light-text: #ffffff;
+            --playful-font: 'Fredoka One', cursive; 
+            --gradient-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
         /* --- Global Styles --- */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             margin: 0;
             padding: 0;
-            background-color: #f0f2f5;
-            color: #333;
+            background-color: #eef1f5; 
+            color: var(--dark-text);
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            line-height: 1.6;
         }
 
         .container {
             width: 100%;
-            max-width: 450px; /* Mobile-like width */
+            max-width: 480px; 
             margin: 0 auto;
             padding: 15px;
             box-sizing: border-box;
-            background-color: #fff;
+            background-color: var(--light-bg);
             flex-grow: 1;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+            padding-bottom: 80px; 
+            border-radius: 10px; 
+            margin-top: 10px;
+            margin-bottom: 10px;
         }
 
         h1, h2, h3 {
-            color: #007bff; /* Primary color */
+            color: var(--primary-color);
             text-align: center;
+            font-family: var(--playful-font);
         }
+        h2 { margin-bottom: 20px; font-size: 1.8em; }
+        h3 { font-size: 1.4em; }
 
-        button {
-            background-color: #007bff;
-            color: white;
+        button, .button-style { 
+            background: var(--gradient-bg); 
+            color: var(--light-text);
             border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
+            padding: 12px 18px; 
+            border-radius: 25px; 
             cursor: pointer;
-            font-size: 16px;
-            margin: 5px 0;
+            font-size: 1em; 
+            font-weight: bold;
+            margin: 8px 0;
             width: 100%;
             box-sizing: border-box;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-align: center;
+            text-decoration: none; 
+            display: inline-block; 
         }
-        button:hover {
-            background-color: #0056b3;
+        button:hover, .button-style:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
-        button.secondary {
-            background-color: #6c757d;
+        button:active, .button-style:active {
+            transform: translateY(0px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
         }
-        button.secondary:hover {
-            background-color: #545b62;
+        button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
-        button.success {
-            background-color: #28a745;
+        button.secondary, .button-style.secondary {
+            background: var(--secondary-color);
         }
-        button.success:hover {
-            background-color: #1e7e34;
+        button.success, .button-style.success {
+            background: var(--success-color);
         }
+        .share-button {
+            width: auto; 
+            padding: 10px 15px;
+            margin: 5px;
+            font-size: 0.9em;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .share-button img { 
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+        }
+
 
         input[type="text"], input[type="password"], input[type="email"] {
             width: 100%;
-            padding: 10px;
-            margin: 8px 0;
+            padding: 12px;
+            margin: 10px 0;
             display: inline-block;
             border: 1px solid #ccc;
-            border-radius: 4px;
+            border-radius: 8px; 
             box-sizing: border-box;
+            font-size: 1em;
+        }
+        input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+            outline: none;
         }
 
-        .page {
-            display: none; /* Hidden by default */
-            padding: 10px 0;
-        }
-        .page.active {
-            display: block;
-        }
+        .page { display: none; padding: 10px 0; animation: fadeIn 0.5s ease-in-out; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
 
         /* --- Header & Navigation --- */
         .app-header {
-            background-color: #007bff;
-            color: white;
-            padding: 10px 15px;
+            background: var(--gradient-bg); 
+            color: var(--light-text);
+            padding: 12px 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
             z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        .app-header .app-title {
-            font-size: 1.5em;
-            font-weight: bold;
-        }
-        .app-header .coin-balance {
-            font-size: 1.1em;
-        }
-        .app-header .menu-icon {
-            font-size: 1.8em;
-            cursor: pointer;
-        }
+        .app-header .app-title { font-size: 1.6em; font-weight: bold; font-family: var(--playful-font);}
+        .app-header .coin-balance { font-size: 1.2em; font-weight: bold; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        .app-header .menu-icon { font-size: 1.8em; cursor: pointer; }
+        .user-avatar-header { width: 30px; height: 30px; border-radius: 50%; background-color: #fff; color: var(--primary-color); display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 10px; font-family: 'Roboto', sans-serif; }
 
-        .side-menu {
-            height: 100%;
-            width: 0; /* Initially hidden */
-            position: fixed;
-            z-index: 1001;
-            top: 0;
-            left: 0;
-            background-color: #111;
-            overflow-x: hidden;
-            transition: 0.3s;
-            padding-top: 60px;
+
+        .side-menu { 
+            height: 100%; width: 0; position: fixed; z-index: 1001; top: 0; left: 0;
+            background-color: rgba(0,0,0,0.9); overflow-x: hidden; transition: 0.3s; padding-top: 60px;
         }
-        .side-menu a {
-            padding: 8px 8px 8px 32px;
-            text-decoration: none;
-            font-size: 20px;
-            color: #818181;
-            display: block;
-            transition: 0.3s;
-        }
-        .side-menu a:hover {
-            color: #f1f1f1;
-        }
-        .side-menu .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 25px;
-            font-size: 36px;
-            margin-left: 50px;
-            color: #fff;
-        }
+        .side-menu a { padding: 10px 15px 10px 32px; text-decoration: none; font-size: 1.1em; color: #ccc; display: block; transition: 0.3s; }
+        .side-menu a:hover { color: var(--light-text); background-color: var(--primary-color); }
+        .side-menu .close-btn { position: absolute; top: 15px; right: 25px; font-size: 36px; color: #fff; }
 
 
         /* --- Specific Page Styles --- */
-        #homePage .content-card {
-            background-color: #e9ecef;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        /* Home Page */
+        #homePage .greeting { font-size: 1.3em; margin-bottom: 15px; text-align: center; font-weight: 500; color: var(--dark-text); }
+        #homePage .daily-quiz-card, .content-card {
+            background-color: var(--light-text);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 12px; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+            transition: transform 0.2s ease;
         }
-        #homePage .content-card h3 {
-            margin-top: 0;
-            color: #495057;
-        }
-        #homePage .content-card p {
-            font-size: 1.1em;
-            line-height: 1.6;
-        }
+        #homePage .daily-quiz-card:hover, .content-card:hover { transform: translateY(-3px); }
+        #homePage .daily-quiz-card h3 { color: var(--primary-color); margin-top: 0; }
+        #homePage .content-card h3 { margin-top: 0; color: var(--dark-text); }
+        #homePage .content-card p { font-size: 1em; line-height: 1.6; }
         #homePage .content-card .options button {
-            background-color: #f8f9fa;
-            color: #007bff;
-            border: 1px solid #007bff;
-            margin: 5px;
-            width: calc(50% - 10px); /* Two buttons per row */
+            background-color: #e9ecef; color: var(--primary-color); border: 1px solid var(--primary-color);
+            margin: 5px; width: calc(50% - 12px); border-radius: 20px; padding: 10px;
         }
-        #homePage .content-card .options button:hover {
-            background-color: #007bff;
-            color: white;
+        #homePage .content-card .options button:hover { background-color: var(--primary-color); color: var(--light-text); }
+        #homePage .progress-bar-container { background-color: #e0e0e0; border-radius: 10px; padding: 3px; margin: 15px 0; }
+        #homePage .progress-bar { height: 15px; background: var(--gradient-bg); border-radius: 7px; width: 0%; transition: width 0.5s ease; text-align: center; color: white; font-size: 0.8em; line-height: 15px; }
+        
+        /* Rewards Page */
+        #rewardsPage .rewards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
+        #rewardsPage .reward-card {
+            background-color: var(--light-text); padding: 15px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+            text-align: center; display: flex; flex-direction: column; justify-content: space-between;
         }
+        #rewardsPage .reward-card img.reward-icon { width: 60px; height: 60px; margin: 0 auto 10px auto; animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
+        #rewardsPage .reward-card h4 { margin: 10px 0 5px 0; font-size: 1.1em; color: var(--dark-text); }
+        #rewardsPage .reward-card .coin-cost { font-size: 1em; color: var(--primary-color); font-weight: bold; margin-bottom: 10px; }
+        #rewardsPage .reward-card.locked { opacity: 0.6; position: relative; }
+        #rewardsPage .reward-card.locked::before { content: ''; position: absolute; top:0; left:0; right:0; bottom:0; background: rgba(255,255,255,0.3); backdrop-filter: blur(2px); border-radius: 10px; }
+        #rewardsPage .reward-card.locked .button-style { background: var(--secondary-color); cursor: not-allowed; z-index: 1; }
+        #rewardsPage .reward-card .coming-soon-tag { font-size: 0.8em; color: var(--warning-color); font-weight: bold; z-index: 1; position:relative; }
+        #rewardsPage .how-to-earn { margin-top: 25px; padding: 15px; background-color: #e9ecef; border-radius: 8px; text-align: center; }
+        #rewardsPage .how-to-earn h4 { color: var(--primary-color); }
+        .info-tooltip { position: relative; display: inline-block; }
+        .info-tooltip .tooltiptext { visibility: hidden; width: 200px; background-color: #555; color: #fff; text-align: center; border-radius: 6px; padding: 5px 0; position: absolute; z-index: 1; bottom: 125%; left: 50%; margin-left: -100px; opacity: 0; transition: opacity 0.3s; font-size: 0.8em;}
+        .info-tooltip:hover .tooltiptext { visibility: visible; opacity: 1;}
+        .info-icon { cursor: help; color: var(--primary-color); font-weight: bold; border: 1px solid; border-radius: 50%; padding: 0px 5px; font-size: 0.7em; margin-left: 5px;}
 
 
-        #rewardsPage .reward-item, #leaderboardPage .leaderboard-item {
-            background-color: #ffffff;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        /* Refer Page */
+        #referPage .catchy-headline { font-size: 1.6em; color: var(--success-color); margin-bottom: 15px; }
+        #referPage .referral-code-card {
+            background: var(--gradient-bg); color: var(--light-text); padding: 20px; border-radius: 10px;
+            text-align: center; margin-bottom: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
+        #referPage .referral-code-card p { margin: 0 0 10px 0; font-size: 1.1em; }
+        #referPage #userReferralCode { font-size: 1.8em; font-weight: bold; letter-spacing: 2px; display: block; margin-bottom: 15px; background-color: rgba(255,255,255,0.1); padding: 5px; border-radius: 5px;}
+        #referPage .referral-benefits ul { list-style: none; padding: 0; text-align: left; max-width: 300px; margin: 15px auto; }
+        #referPage .referral-benefits li { margin-bottom: 8px; display: flex; align-items: center; font-size: 0.95em; }
+        #referPage .referral-benefits li::before { content: '✔️'; color: var(--success-color); margin-right: 10px; font-size: 1.2em; }
 
-        .disclaimer {
-            font-size: 0.8em;
-            color: #666;
-            text-align: center;
-            padding: 10px;
-            border-top: 1px solid #eee;
-            margin-top: 15px;
+        /* Profile Page */
+        #profilePage .profile-header { text-align: center; margin-bottom: 25px; }
+        #profilePage .profile-avatar {
+            width: 100px; height: 100px; border-radius: 50%; background-color: var(--primary-color); color: var(--light-text);
+            display: flex; align-items: center; justify-content: center; font-size: 2.5em; font-weight: bold;
+            margin: 0 auto 10px auto; border: 3px solid var(--light-text); box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            font-family: 'Roboto', sans-serif;
         }
+        #profilePage .username-display { font-size: 1.5em; font-weight: bold; margin-bottom: 5px; font-family: var(--playful-font); }
+        #profilePage .profile-stats { display: flex; justify-content: space-around; margin-bottom: 20px; background-color: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        #profilePage .stat-item { text-align: center; }
+        #profilePage .stat-item .stat-value { font-size: 1.3em; font-weight: bold; color: var(--primary-color); }
+        #profilePage .stat-item .stat-label { font-size: 0.9em; color: var(--secondary-color); }
+        #profilePage .achievements-section h4, #profilePage .activity-feed-section h4 { margin-top: 20px; border-bottom: 1px solid #eee; padding-bottom: 5px; color: var(--dark-text); }
+        #profilePage .badge-list { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 10px; }
+        #profilePage .badge { font-size: 1.8em; padding: 8px; background-color: #e9ecef; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); } 
+        #profilePage .activity-item { background-color: #f9f9f9; padding: 10px; border-radius: 5px; margin-bottom: 8px; font-size: 0.9em; border-left: 3px solid var(--primary-color); }
 
-        .ad-placeholder { /* For AdSense or other ad network integration */
-            width: 100%;
-            height: 60px; /* Example size, adjust as per ad network */
-            background-color: #f0f0f0;
-            border: 1px dashed #ccc;
-            display: flex;
+
+        .disclaimer { font-size: 0.8em; color: #777; text-align: center; padding: 10px; border-top: 1px solid #eee; margin-top: 20px; }
+
+        .ad-placeholder { 
+            width: 320px; /* Fixed width for Adsterra banner */
+            min-height: 50px; /* Minimum height for Adsterra banner */
+            display: flex; /* Changed to flex to see if it helps rendering */
             align-items: center;
             justify-content: center;
-            margin: 15px 0;
-            text-align: center;
-            color: #777;
+            margin: 20px auto; 
+            text-align: center; 
+            /* background-color: #f0f0f0; */ /* Removed background for live ad */
+            /* border: 1px dashed #ccc; */   /* Removed border for live ad */
         }
 
-        /* --- Footer Navigation (Roz Dhan style) --- */
-        .footer-nav {
-            display: flex;
-            justify-content: space-around;
-            background-color: #fff;
-            border-top: 1px solid #e0e0e0;
-            padding: 10px 0;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            max-width: 450px; /* Match container */
-            box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
+
+        /* --- Footer Navigation --- */
+        .footer-nav { 
+            display: flex; justify-content: space-around; background-color: var(--light-text);
+            border-top: 1px solid #e0e0e0; padding: 10px 0; position: fixed; bottom: 0;
+            width: 100%; max-width: 480px; box-shadow: 0 -2px 8px rgba(0,0,0,0.08); z-index: 999;
         }
         .footer-nav button {
-            background: none;
-            border: none;
-            color: #666;
-            font-size: 12px;
-            cursor: pointer;
-            flex-grow: 1;
-            padding: 8px 0;
+            background: none; border: none; color: var(--secondary-color); font-size: 11px; 
+            cursor: pointer; flex-grow: 1; padding: 8px 0; display: flex; flex-direction: column; align-items: center;
         }
-        .footer-nav button.active-nav {
-            color: #007bff;
-            font-weight: bold;
-        }
-        .footer-nav button i { /* For icons if you use FontAwesome or similar */
-            display: block;
-            font-size: 20px;
-            margin-bottom: 4px;
-        }
-
-        /* For loader */
-        .loader {
-            border: 5px solid #f3f3f3;
-            border-radius: 50%;
-            border-top: 5px solid #3498db;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 10px auto;
-            display: none; /* Hidden by default */
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        .footer-nav button img.nav-icon { width: 22px; height: 22px; margin-bottom: 3px; filter: grayscale(50%); } 
+        .footer-nav button.active-nav img.nav-icon { filter: grayscale(0%); }
+        .footer-nav button.active-nav { color: var(--primary-color); font-weight: bold; }
+        
+        /* Loader */
+        .loader { border: 5px solid #f3f3f3; border-radius: 50%; border-top: 5px solid var(--primary-color); width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 20px auto; display: none; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="app-header">
         <span class="menu-icon" onclick="app.toggleMenu()">☰</span>
+        <div id="userAvatarHeader" class="user-avatar-header">?</div>
         <div class="app-title">Masti Coins</div>
         <div class="coin-balance" id="coinBalanceDisplay">Coins: 0</div>
     </div>
 
     <div id="sideMenu" class="side-menu">
         <a href="javascript:void(0)" class="close-btn" onclick="app.toggleMenu()">×</a>
-        <a href="#" onclick="app.navigateTo('homePage'); app.toggleMenu();">Home</a>
-        <a href="#" onclick="app.navigateTo('rewardsPage'); app.toggleMenu();">Rewards</a>
-        <a href="#" onclick="app.navigateTo('referPage'); app.toggleMenu();">Refer & Earn</a>
-        <a href="#" onclick="app.navigateTo('leaderboardPage'); app.toggleMenu();">Leaderboard</a>
-        <a href="#" onclick="app.navigateTo('profilePage'); app.toggleMenu();">Profile</a>
-        <a href="#" id="logoutButton" onclick="app.logout(); app.toggleMenu();">Logout</a>
+        <a href="#" onclick="app.navigateTo('homePage'); app.toggleMenu();">🏠 Home</a>
+        <a href="#" onclick="app.navigateTo('rewardsPage'); app.toggleMenu();">🎁 Rewards</a>
+        <a href="#" onclick="app.navigateTo('referPage'); app.toggleMenu();">🤝 Refer & Earn</a>
+        <a href="#" onclick="app.navigateTo('profilePage'); app.toggleMenu();">👤 Profile</a>
+        <a href="#" id="logoutButton" onclick="app.logout(); app.toggleMenu();">🚪 Logout</a>
     </div>
 
     <div class="container">
-       <!-- Ad Placeholder 1 (e.g., top banner) -->
-<div class="ad-placeholder" style="text-align: center; margin-bottom: 15px; min-height: 50px;">
-    <script type="text/javascript">
-        atOptions = {
-            'key' : '55eb93b752598b42bb3b564e719b2972',
-            'format' : 'iframe',
-            'height' : 50,
-            'width' : 320,
-            'params' : {}
-        };
-    </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/55eb93b752598b42bb3b564e719b2972/invoke.js"></script>
-</div>
-      <!-- Ad Placeholder 1 (e.g., top banner) -->
-<div class="ad-placeholder" style="text-align: center; margin-bottom: 15px; min-height: 50px;">
-    <script type="text/javascript">
-        atOptions = {
-            'key' : '55eb93b752598b42bb3b564e719b2972',
-            'format' : 'iframe',
-            'height' : 50,
-            'width' : 320,
-            'params' : {}
-        };
-    </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/55eb93b752598b42bb3b564e719b2972/invoke.js"></script>
-</div>
-        <!-- Login/Register Page -->
+        <!-- Adsterra Banner Ad -->
+        <div class="ad-placeholder" id="topBannerAd">
+            <script type="text/javascript">
+                atOptions = {
+                    'key' : '55eb93b752598b42bb3b564e719b2972', // YOUR ACTUAL BANNER KEY
+                    'format' : 'iframe',
+                    'height' : 50,
+                    'width' : 320,
+                    'params' : {}
+                };
+            </script>
+            <script type="text/javascript" src="//www.highperformanceformat.com/55eb93b752598b42bb3b564e719b2972/invoke.js"></script> <!-- YOUR ACTUAL BANNER INVOKE SRC -->
+        </div>
+
+        <!-- Auth Page (Login/Register) -->
         <div id="authPage" class="page">
             <div id="loginForm">
-                <h2>Login</h2>
+                <h2>Welcome Back!</h2>
                 <input type="text" id="loginUsername" placeholder="Username" autocomplete="username">
                 <input type="password" id="loginPassword" placeholder="Password" autocomplete="current-password">
-                <button onclick="app.login()">Login</button>
-                <p>Naye ho? <a href="#" onclick="app.showRegisterForm()">Register karo</a></p>
+                <button onclick="app.login()">Login Karo</button>
+                <p>Naye ho? <a href="#" onclick="app.showRegisterForm()" class="button-style secondary" style="width:auto; padding: 8px 15px; font-size:0.9em;">Register karo</a></p>
             </div>
             <div id="registerForm" style="display:none;">
-                <h2>Register</h2>
+                <h2>Join Masti Coins!</h2>
                 <input type="text" id="registerUsername" placeholder="Username" autocomplete="username">
                 <input type="password" id="registerPassword" placeholder="Password" autocomplete="new-password">
                 <input type="email" id="registerEmail" placeholder="Email (Optional)" autocomplete="email">
                 <input type="text" id="registerReferralCode" placeholder="Referral Code (Optional)">
-                <button onclick="app.register()">Register</button>
-                <p>Pehle se account hai? <a href="#" onclick="app.showLoginForm()">Login karo</a></p>
+                <button onclick="app.register()">Register Ho Jao</button>
+                <p>Pehle se account hai? <a href="#" onclick="app.showLoginForm()" class="button-style secondary" style="width:auto; padding: 8px 15px; font-size:0.9em;">Login karo</a></p>
             </div>
-            <div class="disclaimer">Coins sirf entertainment ke liye hain, inki koi real value nahi hai.</div>
+            <div class="disclaimer">Coins sirf entertainment ke liye hain.</div>
         </div>
 
         <!-- Home Page -->
         <div id="homePage" class="page">
-            <h2>Daily Masti</h2>
-            <div id="dailyContentArea">
-                <!-- Content will be loaded here by JS -->
-                <div class="loader" id="contentLoader"></div>
+            <div id="greeting" class="greeting">Namaste, Player!</div>
+            <div class="progress-bar-container" title="Aapka daily streak!">
+                <div id="dailyStreakProgress" class="progress-bar">Loading Streak...</div>
             </div>
-            <button onclick="app.fetchDailyContent(true)" class="secondary">Refresh Content</button>
-
-            <h3>Extra Coins!</h3>
-            <button onclick="app.simulateWatchAd()" class="success">Watch Ad (Simulated) & Earn 10 Coins</button>
-            <div class="disclaimer">Coins sirf entertainment ke liye hain, inki koi real value nahi hai.</div>
+            <div id="dailyQuizCard" class="daily-quiz-card">
+                <h3>🌟 Aaj Ka Daily Challenge! 🌟</h3>
+                <div id="dailyContentArea">
+                    <div class="loader" id="contentLoader" style="display:block;"></div>
+                </div>
+            </div>
+            <button onclick="app.fetchDailyContent(true)" class="button-style secondary">Naya Challenge?</button>
+            <h3>✨ Extra Coins Kamao! ✨</h3>
+            <button id="watchAdButton" onclick="app.triggerAdAndReward()" class="button-style success">Ad Dekho & Coins Paao!</button> 
+            <div class="disclaimer">Coins sirf entertainment ke liye hain.</div>
         </div>
 
         <!-- Rewards Page -->
         <div id="rewardsPage" class="page">
-            <h2>Rewards</h2>
-            <div id="rewardsList">
-                <div class="reward-item"><span>50 Coins</span><button class="secondary" disabled>Redeem (Coming Soon)</button></div>
-                <div class="reward-item"><span>100 Coins</span><button class="secondary" disabled>Redeem (Coming Soon)</button></div>
+            <h2>🎁 Reward Store 🎁
+                <span class="info-tooltip">
+                    <span class="info-icon">i</span>
+                    <span class="tooltiptext">Rewards sirf entertainment ke liye hain aur inki koi real monetary value nahi hai.</span>
+                </span>
+            </h2>
+            <div id="rewardsGrid" class="rewards-grid">
+                <!-- Reward items will be populated by JS -->
             </div>
-            <div class="disclaimer">Coins sirf entertainment ke liye hain, inki koi real value nahi hai.</div>
+            <p id="rewardMessage" style="text-align:center; color: var(--success-color); margin-top:15px; font-weight:bold;"></p>
+            <div class="how-to-earn">
+                <h4>Aur Coins Kaise Kamayein?</h4>
+                <p>Daily challenges poore karo, doston ko refer karo, aur special offers dekho!</p>
+            </div>
+            <div class="disclaimer">Rewards are for entertainment purposes only.</div>
         </div>
+
 
         <!-- Refer & Earn Page -->
         <div id="referPage" class="page">
-            <h2>Refer & Earn</h2>
-            <p>Apne doston ko invite karo aur extra coins kamao!</p>
-            <p>Aapka Referral Code: <strong id="userReferralCode">N/A</strong></p>
-            <button onclick="app.copyReferralCode()">Copy Code</button>
-            <p>Jab aapka dost aapka code istemal karega, aapko 50 coins milenge, aur aapke dost ko 25 bonus coins!</p>
-            <div class="disclaimer">Coins sirf entertainment ke liye hain, inki koi real value nahi hai.</div>
-        </div>
-
-        <!-- Leaderboard Page -->
-        <div id="leaderboardPage" class="page">
-            <h2>Leaderboard (Dummy)</h2>
-            <div id="leaderboardList">
-                <!-- Dummy data will be populated by JS -->
+            <h2 class="catchy-headline">Doston Ko Bulao, Coins Kamao! 💰</h2>
+            <div class="referral-code-card">
+                <p>Aapka Unique Referral Code:</p>
+                <span id="userReferralCode">LOADING...</span>
+                <button onclick="app.copyReferralCode()" class="button-style secondary" style="width:auto; padding:10px 20px; margin-top:10px;">Copy Karo!</button>
             </div>
-            <div class="disclaimer">Coins sirf entertainment ke liye hain, inki koi real value nahi hai.</div>
+            
+            <div class="share-buttons-container">
+                <button onclick="app.shareOnWhatsApp()" class="share-button success">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJ3aGl0ZSIgZD0iTTIwLjA3IDE5LjA1Yy0xLjIDIuMDQtMy44MyAyLjMxLTQuMjkgMi4xOS0uNDYtLjEyLTEuNDgtLjcyLTIuOTYtMi4xNy0xLjQ4LTEuNDYtMi41MS0yLjk4LTIuNjctMy41MS0uMTUtLjU0LjMxLTEuMDMuNzMtMS4zNi4zMi0uMjcgMS4wMy0uNzMgMS4wMy0uNzNzLjM3LS4xOC4xNy0uNTRjLS4yMS0uMzYtMS4wMy0xLjE3LTEuMjMtMS4zNi0uMjEtLjItLjM0LS4yMi0uNTMtLjIyLS4xOSAwLS40My4wMy0uNjUuMDYtLjIyLjAzLS40OC4xNS0uNzMuMzYtLjI0LjIxLS45OC45LTEuMzcgMS43NC0uMy42Ni0uMyAxLjI0LS4yMyAxLjc2LjA2LjUyIDEuNCAyLjY5IDQuMzcgNS41MiAyLjk2IDIuODIgNS40NyA0LjEzIDYuNDUgNC4xMy45OCAwIDEuNjQtLjY4IDEuODgtMS4xLjI0LS40My4yNC0yLjQ0LjEtMi45MS0uMTMtLjQ3LS4yNi0uNS0uNzYtLjc3eiIvPjxwYXRoIGZpbGw9IndoaXRlIiBkPSJNMTIgMjIuNzZjLTUuOTIgMC0xMC43NC00LjgyLTEwLjc0LTEwLjc0UzYuMDggMS4yOCAxMiAxLjI4YzIuNzggMCA1LjM1IDEuMDcgNy4yOCAyLjk5czMuMDIgNC40MyAzLjAyIDcuMjVjMCA1LjkyLTQuODIgMTAuNzQtMTAuNzQgMTAuNzR6TTIxLjYzIDUuNTNjLTEuNzQtMS43NC00LjA1LTIuNzMtNi41My0yLjczLTUuMTQgMC05LjMzIDQuMi05LjMzIDkuMzNzNC4xOSA5LjMzIDkuMzMgOS4zM2M0LjIgMCA3Ljg5LTIuNzkgOS4wOC02LjY0LjA3LS4yNi4wNC0uNTQtLjA2LS43Ny0uMTQtLjM0LS40My0uNTctLjc3LS42NGwtMS43Ny0uMzljLS4zMS0uMDctLjY0LjA3LS44NC4zMy0uNDQuNTYtMS4wNC44LTEuNjkuOC0xLjYxIDAtMi45Mi0xLjMtMi45Mi0yLjkyIDAtMS4yOC44My0yLjM3IDEuOTUtMi43Ny40LS4xMy42OC0uNDguNzItLjg5bC4xMS0xLjExYy4wNS0uNTEtLjM1LTAuOTYtLjg3LTEuMDJ6Ii8+PC9zdmc+" alt="WhatsApp"> WhatsApp
+                </button>
+                <button onclick="app.shareOnTelegram()" class="share-button" style="background: #2AABEE;">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJ3aGl0ZSIgZD0iTTkuNzggMTYuNThsMy4zOS0zLjM5IDEuNTIgMy41NEwxOCAxMC4yOWwtMTIuNjQgNC41M3ptOC44MS0xMS4xN0w0LjUgMTMuNThsMi44OSAxLjA0IDYuNzYtNC4yNWMyLjI4LTEuNDQgMS41My0xLjQtLjQtLjJMNi4yMiAxNS4zOWwtLjAyLjAyYy0xLjM4LjQ5LTEuMzguNzQtMS4zOCAxLjI5IDAgLjU0LjIxIDEuMDYuNjIgMS40Ny40MS40MS45My42MiAxLjQ3LjYyaDEuMDFjLjU0IDAgMS4wNi0uMjEgMS40Ny0uNjJsLjAyLS4wMkwxOS42MyA5LjZjMS44OC0uNjcgMi4xOS0xLjQ0Ljc4LTIuMTl6Ii8+PC9zdmc+" alt="Telegram"> Telegram
+                </button>
+            </div>
+            <div class="referral-benefits">
+                <h4>Referral Ke Fayde:</h4>
+                <ul>
+                    <li>Aapko milenge <span id="referralSenderBonusB">0</span> coins har successful referral par.</li>
+                    <li>Aapke dost ko milenge <span id="referralReceiverBonusB">0</span> bonus coins register karne par.</li>
+                </ul>
+            </div>
+            <div class="disclaimer">Coins sirf entertainment ke liye hain.</div>
         </div>
 
         <!-- Profile Page -->
         <div id="profilePage" class="page">
-            <h2>My Profile</h2>
-            <p>Username: <span id="profileUsername">N/A</span></p>
-            <p>Email: <span id="profileEmail">N/A</span></p>
-            <p>Total Coins: <span id="profileCoins">0</span></p>
-            <p>Joined: <span id="profileJoinedDate">N/A</span></p>
-            <div class="disclaimer">Coins sirf entertainment ke liye hain, inki koi real value nahi hai.</div>
-        </div>
+            <div class="profile-header">
+                <div id="profileAvatar" class="profile-avatar">P</div>
+                <h3 id="profileUsername" class="username-display">Player Name</h3>
+                <p id="profileEmail" style="color: var(--secondary-color); font-size: 0.9em;">player@example.com</p>
+            </div>
 
-         <!-- Ad Placeholder 2 (e.g., bottom banner or interstitial trigger point) -->
-        <<!-- Ad Placeholder 1 (e.g., top banner) -->
-<div class="ad-placeholder" style="text-align: center; margin-bottom: 15px; min-height: 50px;">
-    <script type="text/javascript">
-        atOptions = {
-            'key' : '55eb93b752598b42bb3b564e719b2972',
-            'format' : 'iframe',
-            'height' : 50,
-            'width' : 320,
-            'params' : {}
-        };
-    </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/55eb93b752598b42bb3b564e719b2972/invoke.js"></script>
-</div>
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <div id="profileCoins" class="stat-value">0</div>
+                    <div class="stat-label">Total Coins</div>
+                </div>
+                <div class="stat-item">
+                    <div id="profileQuizzesCompleted" class="stat-value">0</div>
+                    <div class="stat-label">Challenges Done</div>
+                </div>
+                <div class="stat-item">
+                    <div id="profileReferrals" class="stat-value">0</div>
+                    <div class="stat-label">Friends Invited</div>
+                </div>
+            </div>
+             <p style="text-align:center; font-size:0.9em;">Joined: <span id="profileJoinedDate">N/A</span></p>
+
+            <div class="achievements-section">
+                <h4>🏆 Achievements 🏆</h4>
+                <div id="badgeList" class="badge-list">
+                    <!-- Badges will be populated by JS -->
+                </div>
+            </div>
+            <div class="activity-feed-section">
+                <h4>🕒 Recent Activity 🕒</h4>
+                <div id="activityFeed" class="activity-feed">
+                    <p class="activity-item">Welcome to Masti Coins!</p>
+                </div>
+            </div>
+            <div class="disclaimer">Coins sirf entertainment ke liye hain.</div>
+        </div>
     </div> <!-- End .container -->
 
     <div class="footer-nav" id="footerNav">
-        <button onclick="app.navigateTo('homePage')" data-page="homePage">Home</button>
-        <button onclick="app.navigateTo('rewardsPage')" data-page="rewardsPage">Rewards</button>
-        <button onclick="app.navigateTo('referPage')" data-page="referPage">Refer</button>
-        <button onclick="app.navigateTo('leaderboardPage')" data-page="leaderboardPage">Board</button>
-        <button onclick="app.navigateTo('profilePage')" data-page="profilePage">Profile</button>
+        <button onclick="app.navigateTo('homePage')" data-page="homePage">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTIgMi41bC05IDguNjQzdjkuMzU3aDV2LTZoNHY2aDV2LTkuMzU3eiIvPjwvc3ZnPg==" alt="Home" class="nav-icon">Home
+        </button>
+        <button onclick="app.navigateTo('rewardsPage')" data-page="rewardsPage">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTIgMiBsLTIuNDIgNy40MmgtNy44MWw2LjMyIDQuNmwtMi40MiA3LjQybDYuMzItNC42bDYuMzIgNC42bC0yLjQyLTcuNDJsNi4zMi00LjZoLTcuODF6Ii8+PC9zdmc+" alt="Rewards" class="nav-icon">Rewards
+        </button>
+        <button onclick="app.navigateTo('referPage')" data-page="referPage">
+             <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTYgMTFjMS42NiAwIDMtMS4zNCAzLTNzLTEuMzQtMy0zLTNzLTMgMS4zNC0zIDNzMS4zNCAzIDMgM3ptLTggMGMxLjY2IDAgMy0xLjM0IDMtM3MtMS4zNC0zLTMtM3MtMyAxLjM0LTMgM3MxLjM0IDMgMyAzem0wIDJjLTIuMzMgMC03IDEuMTctNyA S2YxLjc4IDE2IDggMThjLjA5IDAgLjE3IDAgLjI1LS4wM2MyLjM4LS4yOSAzLjY3LTEuNTQgMy42Ny0zLjA3di0xLjM0YzAtLjM4LS4yMi0uNzItLjU1LS44OHoiLz48cGF0aCBkPSJNMTYgMTNjLTIuMzMgMC03IDEuMTctNyA My41bDYuNzUtLjAyYzEuNzgtLjA4IDMuMjUtMS4zIDMuMjUtMy4wN3YtMS4zNGMwLS4zOC0uMjItLjcyLS41NS0uODh6Ii8+PC9zdmc+" alt="Refer" class="nav-icon">Refer
+        </button>
+        <button onclick="app.navigateTo('profilePage')" data-page="profilePage">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTIgMi41Yy0yLjQ4IDAtNC41IDItNC41IDQuNWMwIDIuNDggMi4wMiA0LjUgNC41IDQuNXMyLjQ4LTIuMDQgNC41LTQuNWMwLTIuNDgtMi4wMi00LjUtNC41LTQuNXptMCA5Yy0zLjMyIDAtNiAzLjE4LTYgNnYxLjVjMCAuODMuNjcgMS41IDEuNSAxLjVoOWMuODMgMCAxLjUtLjY3IDEuNS0xLjV2LTEuNWMwLTIuODItMi42OC01LTYtNXoiLz48L3N2Zz4=" alt="Profile" class="nav-icon">Profile
+        </button>
     </div>
-
-
+    
 <script>
+// Paste the entire JavaScript 'app' object here from the previous response
+// This includes app.init(), app.login(), app.fetchDailyContent(), app.triggerAdAndReward(), etc.
+// I'm pasting it again for completeness in this specific response.
 const app = {
     currentUser: null,
-    users: [], // Array to store user objects {username, password, email, coins, referralCode, referredBy, joinDate}
+    users: [],
     config: {
-        coinsPerJoke: 5,
-        coinsPerFact: 3,
-        coinsPerQuizCorrect: 10,
-        coinsPerReferralSender: 50,
-        coinsPerReferralReceiver: 25,
-        coinsPerAdWatch: 10,
-        dailyContentCacheKey: 'dailyContentData',
-        lastFetchDateKey: 'lastContentFetchDate',
+        coinsPerJoke: 7, 
+        coinsPerFact: 4, 
+        coinsPerQuizCorrect: 12, 
+        coinsPerReferralSender: 60,
+        coinsPerReferralReceiver: 30,
+        coinsPerAdWatch: 15,
+        adWatchCooldown: 60000, // 60 seconds
+        dailyContentCacheKey: 'mastiCoinsDailyContent_v4_ui_pop_final', 
+        lastFetchDateKey: 'mastiCoinsLastFetchDate_v4_ui_pop_final',
+        loggedInUserKey: 'mastiCoinsLoggedInUser_v4_ui_pop_final',
+        lastAdWatchTimeKey: 'mastiCoinsLastAdWatchTime_v4_ui_pop_final',
+        userStatsKeyPrefix: 'mastiUserStats_v4_ui_pop_final', 
     },
-    // Embedded Sample Data (Fallback)
-    sampleContent: {
-        jokes: [
-            { type: 'joke', setup: "Teacher: Newton ka law batao.", punchline: "Student: Sir, exam ke time Newton mar gaya tha, ab uska law kaise batau? Yaad nahi!", source: "Local" },
-            { type: 'joke', setup: "Ek machhar pareshan hokar bola...", punchline: "Bhagwan, tune mujhe khoon peene wala banaya, kam se kam raat ko torch toh deta!", source: "Local" }
-        ],
-        facts: [
-            { type: 'fact', text: "Duniya mein sabse zyada istemal hone wala password '123456' hai. Aapka toh nahi?", source: "Local" },
-            { type: 'fact', text: "Ek average insaan apni life ka 6 months traffic light pe red se green hone ka wait karta hai.", source: "Local" }
-        ],
-        quizzes: [
-            { 
-                type: 'quiz', 
-                question: "India ka national animal kaunsa hai?", 
-                options: ["Lion", "Tiger", "Elephant", "Peacock"], 
-                correctAnswer: "Tiger",
-                source: "Local"
-            },
-            { 
-                type: 'quiz', 
-                question: "HTML ka full form kya hai?", 
-                options: ["Hyper Text Markup Language", "High Tech Modern Language", "Hyperlink Textual Markup Logic", "Home Tool Markup Language"], 
-                correctAnswer: "Hyper Text Markup Language",
-                source: "Local"
-            }
-        ]
+    sampleContent: { 
+        jokes: [ { type: 'joke', setup: "Teacher: Newton ka law batao.", punchline: "Student: Sir, exam ke time Newton mar gaya tha, ab uska law kaise batau? Yaad nahi!", source: "Local" }, { type: 'joke', setup: "Ek machhar pareshan hokar bola...", punchline: "Bhagwan, tune mujhe khoon peene wala banaya, kam se kam raat ko torch toh deta!", source: "Local" } ], facts: [ { type: 'fact', text: "Duniya mein sabse zyada istemal hone wala password '123456' hai. Aapka toh nahi?", source: "Local" }, { type: 'fact', text: "Ek average insaan apni life ka 6 months traffic light pe red se green hone ka wait karta hai.", source: "Local" } ], quizzes: [ {  type: 'quiz',  question: "India ka national animal kaunsa hai?",  options: ["Lion", "Tiger", "Elephant", "Peacock"],  correctAnswer: "Tiger", source: "Local" }, {  type: 'quiz',  question: "HTML ka full form kya hai?",  options: ["Hyper Text Markup Language", "High Tech Modern Language", "Hyperlink Textual Markup Logic", "Home Tool Markup Language"],  correctAnswer: "Hyper Text Markup Language", source: "Local" } ]
     },
 
     init() {
         this.loadUsers();
-        this.checkLoginStatus();
-        this.updateFooterNav();
+        this.checkLoginStatus(); 
+        this.updateFooterNav(); 
+        this.updateDynamicContent(); 
 
-        // Attempt to fetch fresh content if it's a new day or cache is old
-        this.fetchDailyContent();
-    },
-
-    // --- LOCALSTORAGE HELPERS ---
-    saveUsers() {
-        localStorage.setItem('mastiCoinsUsers', JSON.stringify(this.users));
-    },
-    loadUsers() {
-        const usersData = localStorage.getItem('mastiCoinsUsers');
-        if (usersData) {
-            this.users = JSON.parse(usersData);
+        if (this.currentUser && document.getElementById('homePage').classList.contains('active')) {
+            this.fetchDailyContent();
         }
-    },
-    setCurrentUser(username) {
-        this.currentUser = this.users.find(u => u.username === username);
-        localStorage.setItem('mastiCoinsCurrentUser', username);
-        this.updateUI();
-    },
-    clearCurrentUser() {
-        this.currentUser = null;
-        localStorage.removeItem('mastiCoinsCurrentUser');
-        this.updateUI();
-    },
-
-    // --- AUTHENTICATION ---
-    showRegisterForm() {
-        document.getElementById('loginForm').style.display = 'none';
-        document.getElementById('registerForm').style.display = 'block';
-    },
-    showLoginForm() {
-        document.getElementById('registerForm').style.display = 'none';
-        document.getElementById('loginForm').style.display = 'block';
-    },
-    register() {
-        const username = document.getElementById('registerUsername').value.trim();
-        const password = document.getElementById('registerPassword').value;
-        const email = document.getElementById('registerEmail').value.trim();
-        const referralCodeInput = document.getElementById('registerReferralCode').value.trim();
-
-        if (!username || !password) {
-            alert('Username aur Password zaroori hai!');
-            return;
-        }
-        if (this.users.find(u => u.username === username)) {
-            alert('Yeh username pehle se hai. Koi aur try karo.');
-            return;
-        }
-
-        const newUser = {
-            username,
-            password, // Note: In a real app, hash passwords! This is for pure client-side demo.
-            email,
-            coins: 0,
-            referralCode: this.generateReferralCode(username),
-            referredBy: null,
-            joinDate: new Date().toLocaleDateString()
-        };
-
-        if (referralCodeInput) {
-            const referrer = this.users.find(u => u.referralCode === referralCodeInput);
-            if (referrer) {
-                newUser.coins += this.config.coinsPerReferralReceiver;
-                newUser.referredBy = referrer.username;
-                // Award coins to referrer
-                referrer.coins += this.config.coinsPerReferralSender;
-                alert(`Referral code ${referralCodeInput} apply ho gaya! Aapko ${this.config.coinsPerReferralReceiver} bonus coins mile!`);
-            } else {
-                alert('Invalid referral code. Koi baat nahi, aap bina uske register kar sakte ho.');
-            }
-        }
-
-        this.users.push(newUser);
-        this.saveUsers();
-        this.setCurrentUser(username);
-        alert('Registration successful! Ab aap login kar sakte ho.');
-        this.showLoginForm(); // Switch to login form
-        document.getElementById('registerForm').reset();
-    },
-    login() {
-        const username = document.getElementById('loginUsername').value.trim();
-        const password = document.getElementById('loginPassword').value;
-        const user = this.users.find(u => u.username === username && u.password === password);
-
-        if (user) {
-            this.setCurrentUser(username);
-            this.navigateTo('homePage');
-            this.fetchDailyContent(); // Fetch content on login
-        } else {
-            alert('Galat username ya password!');
-        }
-        document.getElementById('loginForm').reset();
-    },
-    logout() {
-        this.clearCurrentUser();
-        this.navigateTo('authPage');
-    },
-    checkLoginStatus() {
-        const loggedInUser = localStorage.getItem('mastiCoinsCurrentUser');
-        if (loggedInUser) {
-            this.setCurrentUser(loggedInUser);
-            this.navigateTo('homePage');
-        } else {
-            this.navigateTo('authPage');
-        }
-    },
-
-    // --- UI & NAVIGATION ---
-    updateUI() {
-        if (this.currentUser) {
-            document.getElementById('coinBalanceDisplay').innerText = `Coins: ${this.currentUser.coins}`;
-            document.getElementById('profileUsername').innerText = this.currentUser.username;
-            document.getElementById('profileEmail').innerText = this.currentUser.email || 'N/A';
-            document.getElementById('profileCoins').innerText = this.currentUser.coins;
-            document.getElementById('userReferralCode').innerText = this.currentUser.referralCode;
-            document.getElementById('profileJoinedDate').innerText = this.currentUser.joinDate || 'N/A';
-            document.getElementById('logoutButton').style.display = 'block';
-        } else {
-            document.getElementById('coinBalanceDisplay').innerText = 'Coins: 0';
-            document.getElementById('logoutButton').style.display = 'none';
-        }
-        this.displayLeaderboard(); // Refresh leaderboard
-    },
-    navigateTo(pageId) {
-        document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-        document.getElementById(pageId).classList.add('active');
+        const senderBonusEl = document.getElementById('referralSenderBonusB');
+        const receiverBonusEl = document.getElementById('referralReceiverBonusB');
+        if(senderBonusEl) senderBonusEl.innerText = this.config.coinsPerReferralSender;
+        if(receiverBonusEl) receiverBonusEl.innerText = this.config.coinsPerReferralReceiver;
         
-        if (this.currentUser && pageId !== 'authPage') {
-            document.getElementById('footerNav').style.display = 'flex';
-             document.querySelector('.app-header .menu-icon').style.display = 'block';
+        this.updateAdButtonState();
+        this.renderRewards(); 
+    },
+
+    updateDynamicContent() { 
+        if (this.currentUser) {
+            const greetingEl = document.getElementById('greeting');
+            if(greetingEl) greetingEl.innerText = `Namaste, ${this.currentUser.username}! Masti karne ke liye taiyaar?`;
+            const avatarHeaderEl = document.getElementById('userAvatarHeader');
+            const profileAvatarEl = document.getElementById('profileAvatar');
+            const userInitial = this.currentUser.username.charAt(0).toUpperCase();
+            if(avatarHeaderEl) avatarHeaderEl.innerText = userInitial;
+            if(profileAvatarEl) profileAvatarEl.innerText = userInitial;
+            const userStats = this.getUserStats();
+            const streakProgressEl = document.getElementById('dailyStreakProgress');
+            if(streakProgressEl) {
+                const streak = (userStats.quizzesCompleted || 0) % 7; 
+                const streakPercentage = (streak / 7) * 100;
+                streakProgressEl.style.width = `${streakPercentage}%`;
+                streakProgressEl.innerText = `${streak}-Day Streak!`;
+            }
         } else {
-            document.getElementById('footerNav').style.display = 'none';
-            document.querySelector('.app-header .menu-icon').style.display = 'none';
+            const greetingEl = document.getElementById('greeting');
+            if(greetingEl) greetingEl.innerText = `Masti Coins Mein Aapka Swagat Hai!`;
+             const streakProgressEl = document.getElementById('dailyStreakProgress');
+            if(streakProgressEl) { streakProgressEl.style.width = `0%`; streakProgressEl.innerText = `Login for Streak!`;}
         }
+    },    
+    getUserStats(username) { 
+        const targetUsername = username || (this.currentUser ? this.currentUser.username : null);
+        if (!targetUsername) return { quizzesCompleted: 0, referralsMade: 0, badges: ['🚀'] };
+        try { const statsData = localStorage.getItem(this.config.userStatsKeyPrefix + targetUsername); if (statsData) return JSON.parse(statsData); } catch(e) { console.error("Error loading user stats:", e); }
+        return { quizzesCompleted: 0, referralsMade: 0, badges: ['🚀'] };
+    },
+    saveUserStats(username, stats) { 
+        if (!username) return; try { localStorage.setItem(this.config.userStatsKeyPrefix + username, JSON.stringify(stats)); } catch (e) { console.error("Error saving user stats:", e); }
+    },    
+    updateUserStatsOnAction(actionType) { 
+        if (!this.currentUser) return; let stats = this.getUserStats(this.currentUser.username);
+        if (actionType === 'quizCompleted') { stats.quizzesCompleted = (stats.quizzesCompleted || 0) + 1; if (stats.quizzesCompleted >= 10 && !stats.badges.includes('🧠')) stats.badges.push('🧠');}
+        else if (actionType === 'referralMade') { stats.referralsMade = (stats.referralsMade || 0) + 1; if (stats.referralsMade >= 5 && !stats.badges.includes('🤝')) stats.badges.push('🤝');}
+        if (this.currentUser.coins >= 100 && !stats.badges.includes('💰')) stats.badges.push('💰');
+        this.saveUserStats(this.currentUser.username, stats); this.updateProfilePageStats();
+    },
+    updateProfilePageStats() { 
+        if (!this.currentUser || !document.getElementById('profilePage').classList.contains('active')) return;
+        const stats = this.getUserStats(this.currentUser.username);
+        const quizzesCompletedEl = document.getElementById('profileQuizzesCompleted'); if(quizzesCompletedEl) quizzesCompletedEl.innerText = stats.quizzesCompleted;
+        const referralsMadeEl = document.getElementById('profileReferrals'); if(referralsMadeEl) referralsMadeEl.innerText = stats.referralsMade;
+        const badgeListEl = document.getElementById('badgeList');
+        if(badgeListEl) { badgeListEl.innerHTML = ''; stats.badges.forEach(badgeEmoji => { const badgeSpan = document.createElement('span'); badgeSpan.className = 'badge'; badgeSpan.innerText = badgeEmoji; if(badgeEmoji === '🚀') badgeSpan.title = "Pehla Kadam: Registered!"; if(badgeEmoji === '💰') badgeSpan.title = "Coin Collector: 100+ Coins Earned!"; if(badgeEmoji === '🧠') badgeSpan.title = "Quiz Master: 10+ Quizzes Solved!"; if(badgeEmoji === '🤝') badgeSpan.title = "Super Referrer: 5+ Friends Invited!"; badgeListEl.appendChild(badgeSpan); });}
+        const activityFeedEl = document.getElementById('activityFeed');
+        if(activityFeedEl) { activityFeedEl.innerHTML = `<p class="activity-item">Welcome to Masti Coins, ${this.currentUser.username}!</p>`; if (stats.quizzesCompleted > 0) { activityFeedEl.innerHTML += `<p class="activity-item">Aapne ${stats.quizzesCompleted} challenges complete kiye hain!</p>`; } if (this.currentUser.coins > 50) { activityFeedEl.innerHTML += `<p class="activity-item">Shabash! Aapke paas ${this.currentUser.coins} coins hain.</p>`;}}
+    },
+    saveUsers() { try { localStorage.setItem('mastiCoinsUsers', JSON.stringify(this.users)); } catch (e) { console.error("Error saving users to localStorage:", e); } },
+    loadUsers() { try { const usersData = localStorage.getItem('mastiCoinsUsers'); if (usersData) { this.users = JSON.parse(usersData); } } catch (e) { console.error("Error loading users:", e); this.users = []; } },
+    setCurrentUser(username) { const user = this.users.find(u => u.username === username); if (user) { this.currentUser = user; try { localStorage.setItem(this.config.loggedInUserKey, username); } catch (e) { console.error("Error saving current user:", e); } } else { this.currentUser = null; localStorage.removeItem(this.config.loggedInUserKey); } this.updateUI(); this.updateDynamicContent(); },
+    clearCurrentUser() { this.currentUser = null; try { localStorage.removeItem(this.config.loggedInUserKey); } catch (e) { console.error("Error clearing current user:", e); } this.updateUI(); this.updateDynamicContent(); },
+    showRegisterForm() { document.getElementById('loginForm').style.display = 'none'; document.getElementById('registerForm').style.display = 'block'; },
+    showLoginForm() { document.getElementById('registerForm').style.display = 'none'; document.getElementById('loginForm').style.display = 'block'; },
+    register() { 
+        const usernameInput = document.getElementById('registerUsername'); const passwordInput = document.getElementById('registerPassword'); const emailInput = document.getElementById('registerEmail'); const referralCodeInputEl = document.getElementById('registerReferralCode');
+        const username = usernameInput.value.trim(); const password = passwordInput.value; const email = emailInput.value.trim(); const referralCodeInput = referralCodeInputEl.value.trim();
+        if (!username || !password) { alert('Username aur Password zaroori hai!'); return; }
+        if (this.users.find(u => u.username.toLowerCase() === username.toLowerCase())) { alert('Yeh username pehle se hai. Koi aur try karo.'); return; }
+        const newUser = { username, password, email, coins: 0, referralCode: this.generateReferralCode(username), referredBy: null, joinDate: new Date().toLocaleDateString() };
+        this.saveUserStats(username, { quizzesCompleted: 0, referralsMade: 0, badges: ['🚀'] });
+        if (referralCodeInput) {
+            const referrer = this.users.find(u => u.referralCode === referralCodeInput && u.username !== username);
+            if (referrer) {
+                newUser.coins += this.config.coinsPerReferralReceiver; newUser.referredBy = referrer.username;
+                referrer.coins += this.config.coinsPerReferralSender;
+                // Corrected context for updateUserStatsOnAction for referrer
+                const tempThis = { currentUser: referrer, getUserStats: this.getUserStats.bind(this), saveUserStats: this.saveUserStats.bind(this), config: this.config, updateProfilePageStats: () => {}, users: this.users, addActivityToFeed: () => {}, updateUI: () => {} };
+                this.updateUserStatsOnAction.call(tempThis, 'referralMade');
+                this.saveUsers(); 
+                alert(`Referral code "${referralCodeInput}" apply ho gaya! Aapko ${this.config.coinsPerReferralReceiver} bonus coins mile!`);
+            } else { alert('Galat referral code. Koi baat nahi, aap bina uske register kar sakte ho.'); }
+        }
+        this.users.push(newUser); this.saveUsers();
+        alert('Registration successful! Ab aap login kar sakte ho.'); this.showLoginForm();
+        usernameInput.value = ''; passwordInput.value = ''; emailInput.value = ''; referralCodeInputEl.value = '';
+    },
+    login() { 
+        const usernameInput = document.getElementById('loginUsername'); const passwordInput = document.getElementById('loginPassword');
+        const username = usernameInput.value.trim(); const password = passwordInput.value;
+        if (!username || !password) { alert('Username aur Password daalo.'); return; }
+        const user = this.users.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password);
+        if (user) { this.setCurrentUser(user.username); this.navigateTo('homePage'); }
+        else { alert('Galat username ya password!'); }
+        usernameInput.value = ''; passwordInput.value = '';
+    },
+    logout() { this.clearCurrentUser(); this.navigateTo('authPage'); localStorage.removeItem(this.config.dailyContentCacheKey); localStorage.removeItem(this.config.lastFetchDateKey); },
+    checkLoginStatus() { const loggedInUsername = localStorage.getItem(this.config.loggedInUserKey); if (loggedInUsername) { const userExists = this.users.find(u => u.username === loggedInUsername); if (userExists) { this.setCurrentUser(loggedInUsername); this.navigateTo('homePage'); return; } else { this.clearCurrentUser(); } } this.navigateTo('authPage'); },
+    updateUI() { 
+        const coinBalanceDisplay=document.getElementById('coinBalanceDisplay'); const profileUsernameEl=document.getElementById('profileUsername');
+        const profileEmailEl=document.getElementById('profileEmail'); const profileCoinsEl=document.getElementById('profileCoins');
+        const userReferralCodeEl=document.getElementById('userReferralCode'); const profileJoinedDateEl=document.getElementById('profileJoinedDate');
+        const logoutButton=document.getElementById('logoutButton'); const avatarHeaderEl=document.getElementById('userAvatarHeader'); const profileAvatarEl=document.getElementById('profileAvatar');
+        if(this.currentUser){
+            const userInitial = this.currentUser.username.charAt(0).toUpperCase();
+            if(avatarHeaderEl) avatarHeaderEl.innerText = userInitial;
+            if(profileAvatarEl) profileAvatarEl.innerText = userInitial;
+            if(coinBalanceDisplay)coinBalanceDisplay.innerText=`Coins: ${this.currentUser.coins}`; if(profileUsernameEl)profileUsernameEl.innerText=this.currentUser.username;
+            if(profileEmailEl)profileEmailEl.innerText=this.currentUser.email||'N/A'; if(profileCoinsEl)profileCoinsEl.innerText=this.currentUser.coins;
+            if(userReferralCodeEl)userReferralCodeEl.innerText=this.currentUser.referralCode; if(profileJoinedDateEl)profileJoinedDateEl.innerText=this.currentUser.joinDate||'N/A';
+            if(logoutButton)logoutButton.style.display='block';
+        }else{
+            if(avatarHeaderEl) avatarHeaderEl.innerText = '?'; if(profileAvatarEl) profileAvatarEl.innerText = 'P';
+            if(coinBalanceDisplay)coinBalanceDisplay.innerText='Coins: 0'; if(profileUsernameEl)profileUsernameEl.innerText='Player Name';
+            if(profileEmailEl)profileEmailEl.innerText='player@example.com'; if(profileCoinsEl)profileCoinsEl.innerText='0';
+            if(userReferralCodeEl)userReferralCodeEl.innerText='Login to see code'; if(profileJoinedDateEl)profileJoinedDateEl.innerText='N/A';
+            if(logoutButton)logoutButton.style.display='none';
+        }
+    },
+    navigateTo(pageId) { 
+        document.querySelectorAll('.page').forEach(page => page.classList.remove('active')); 
+        const targetPage = document.getElementById(pageId); 
+        if (targetPage) { targetPage.classList.add('active'); } else { console.error(`Page ${pageId} not found`); document.getElementById('authPage').classList.add('active'); }
+        const shouldShowNav = this.currentUser && pageId !== 'authPage';
+        const footerNav = document.getElementById('footerNav'); const menuIcon = document.querySelector('.app-header .menu-icon');
+        if(footerNav) footerNav.style.display = shouldShowNav ? 'flex' : 'none'; if(menuIcon) menuIcon.style.display = shouldShowNav ? 'block' : 'none';
         this.updateFooterNav(pageId);
+        if (pageId === 'homePage' && this.currentUser) { this.fetchDailyContent(); }
+        if (pageId === 'profilePage' && this.currentUser) { this.updateProfilePageStats(); } 
+        if (pageId === 'rewardsPage') { this.renderRewards(); } 
     },
-    updateFooterNav(activePageId) {
-        const buttons = document.querySelectorAll('.footer-nav button');
-        buttons.forEach(button => {
-            if (button.getAttribute('data-page') === activePageId) {
-                button.classList.add('active-nav');
-            } else {
-                button.classList.remove('active-nav');
-            }
-        });
-    },
-    toggleMenu() {
-        const menu = document.getElementById('sideMenu');
-        if (menu.style.width === '250px') {
-            menu.style.width = '0';
-        } else {
-            menu.style.width = '250px';
-        }
-    },
-
-    // --- DAILY CONTENT ---
-    async fetchDailyContent(forceRefresh = false) {
-        if (!this.currentUser) return; // Don't fetch if not logged in
-
-        const loader = document.getElementById('contentLoader');
-        loader.style.display = 'block';
-        const contentArea = document.getElementById('dailyContentArea');
-        contentArea.innerHTML = ''; // Clear previous content first, then show loader if needed
-        contentArea.appendChild(loader);
-
-
-        const today = new Date().toDateString();
-        const lastFetchDate = localStorage.getItem(this.config.lastFetchDateKey);
-        let cachedContent = localStorage.getItem(this.config.dailyContentCacheKey);
-
-        if (cachedContent && lastFetchDate === today && !forceRefresh) {
-            try {
-                cachedContent = JSON.parse(cachedContent);
-                this.displayContent(cachedContent);
-                loader.style.display = 'none';
-                return;
-            } catch (e) {
-                console.warn("Could not parse cached content, fetching new.");
-                localStorage.removeItem(this.config.dailyContentCacheKey); // Clear bad cache
-            }
-        }
-
-        // Decide what to fetch: joke, fact, or quiz
-        const contentType = ['joke', 'fact', 'quiz'][Math.floor(Math.random() * 3)];
-        let data = null;
-        let source = "API";
-
+    updateFooterNav(activePageId) { const buttons = document.querySelectorAll('.footer-nav button'); buttons.forEach(button => { if (button.getAttribute('data-page') === activePageId) { button.classList.add('active-nav'); } else { button.classList.remove('active-nav'); } }); },
+    toggleMenu() { const menu = document.getElementById('sideMenu'); if(menu) menu.style.width = menu.style.width === '250px' ? '0' : '250px'; },
+    async fetchDailyContent(forceRefresh = false) { 
+        if (!this.currentUser) return; 
+        const loader = document.getElementById('contentLoader'); const contentArea = document.getElementById('dailyContentArea');
+        if (forceRefresh || !contentArea.innerHTML.trim() || contentArea.innerHTML.includes('loader')) { contentArea.innerHTML = ''; if(loader) loader.style.display = 'block'; if(loader) contentArea.appendChild(loader); }
+        const today = new Date().toDateString(); const lastFetchDate = localStorage.getItem(this.config.lastFetchDateKey); let cachedContentData = localStorage.getItem(this.config.dailyContentCacheKey);
+        if (cachedContentData && lastFetchDate === today && !forceRefresh) { try { const cachedContent = JSON.parse(cachedContentData); this.displayContent(cachedContent); if(loader) loader.style.display = 'none'; return; } catch (e) { localStorage.removeItem(this.config.dailyContentCacheKey); } }
+        const contentType = ['joke', 'fact', 'quiz'][Math.floor(Math.random() * 3)]; let data = null;
         try {
             let response;
-            if (contentType === 'joke') {
-                response = await fetch('https://v2.jokeapi.dev/joke/Any?type=single&safe-mode&lang=en');
-                if (!response.ok) throw new Error(`Joke API error! status: ${response.status}`);
-                const jokeData = await response.json();
-                if (jokeData.error) throw new Error(`Joke API logical error: ${jokeData.message}`);
-                data = { type: 'joke', setup: jokeData.joke, punchline: "" }; // Single type joke
-            } else if (contentType === 'fact') {
-                response = await fetch('https://uselessfacts.jsph.pl/random.json?language=en');
-                 if (!response.ok) throw new Error(`Fact API error! status: ${response.status}`);
-                const factData = await response.json();
-                data = { type: 'fact', text: factData.text };
-            } else { // Quiz
-                response = await fetch('https://opentdb.com/api.php?amount=1&type=multiple');
-                if (!response.ok) throw new Error(`Quiz API error! status: ${response.status}`);
-                const quizData = await response.json();
-                if (quizData.response_code !== 0 || !quizData.results || quizData.results.length === 0) {
-                    throw new Error('Quiz API did not return a valid question.');
-                }
-                const q = quizData.results[0];
-                const options = [...q.incorrect_answers, q.correct_answer];
-                this.shuffleArray(options); // Shuffle options
-                data = { 
-                    type: 'quiz', 
-                    question: this.decodeHtmlEntities(q.question), 
-                    options: options.map(opt => this.decodeHtmlEntities(opt)), 
-                    correctAnswer: this.decodeHtmlEntities(q.correct_answer) 
-                };
-            }
-            data.source = source; // Add source information
-            localStorage.setItem(this.config.dailyContentCacheKey, JSON.stringify(data));
-            localStorage.setItem(this.config.lastFetchDateKey, today);
+            if (contentType === 'joke') { response = await fetch('https://v2.jokeapi.dev/joke/Any?type=single&safe-mode&lang=en'); if (!response.ok) throw new Error('API Err'); const d = await response.json(); if (d.error) throw new Error(d.message || 'Joke API Error'); data = { type: 'joke', setup: d.joke, punchline: ""}; }
+            else if (contentType === 'fact') { response = await fetch('https://uselessfacts.jsph.pl/random.json?language=en');  if (!response.ok) throw new Error('API Err'); data = { type: 'fact', text: (await response.json()).text }; }
+            else { response = await fetch('https://opentdb.com/api.php?amount=1&type=multiple'); if (!response.ok) throw new Error('API Err'); const d = await response.json(); if (d.response_code !== 0 || !d.results || d.results.length === 0) throw new Error('No Quiz Question'); const q = d.results[0]; const opts = [...q.incorrect_answers, q.correct_answer]; this.shuffleArray(opts); data = { type: 'quiz', question: this.decodeHtmlEntities(q.question), options: opts.map(o => this.decodeHtmlEntities(o)), correctAnswer: this.decodeHtmlEntities(q.correct_answer) }; }
+            data.source = "API"; localStorage.setItem(this.config.dailyContentCacheKey, JSON.stringify(data)); localStorage.setItem(this.config.lastFetchDateKey, today);
         } catch (error) {
-            console.error("Error fetching from API:", error);
-            // Fallback to local sample data if API fails
-            if (contentType === 'joke') data = this.sampleContent.jokes[Math.floor(Math.random() * this.sampleContent.jokes.length)];
-            else if (contentType === 'fact') data = this.sampleContent.facts[Math.floor(Math.random() * this.sampleContent.facts.length)];
+            console.error("API Error:", error.message); if(contentArea) contentArea.innerHTML = `<p class="content-card" style="color:var(--danger-color);">Content laane mein dikkat! Local content dekhein.</p>`;
+            const fallbackType = ['joke', 'fact', 'quiz'][Math.floor(Math.random()*3)];
+            if (fallbackType === 'joke') data = this.sampleContent.jokes[Math.floor(Math.random() * this.sampleContent.jokes.length)];
+            else if (fallbackType === 'fact') data = this.sampleContent.facts[Math.floor(Math.random() * this.sampleContent.facts.length)];
             else data = this.sampleContent.quizzes[Math.floor(Math.random() * this.sampleContent.quizzes.length)];
-            data.source = "Local (Fallback)"; // Indicate it's fallback
-            // No need to cache fallback data as daily content
+            if(data) data.source = "Local (Fallback)";
         } finally {
-            loader.style.display = 'none';
-            if (data) {
-                this.displayContent(data);
-            } else {
-                contentArea.innerHTML = "<p>Aaj ke liye content nahi mil paya. Kal try karein!</p>";
-            }
+            if(loader) loader.style.display = 'none';
+            if (data && contentArea) { if(contentArea.innerHTML.includes('Local content dekhein')) { const t = document.createElement('div'); this.displayContent(data,t); contentArea.appendChild(t.firstChild); } else { this.displayContent(data, contentArea); }}
+            else if (contentArea && !contentArea.innerHTML.includes('Local content dekhein')) { contentArea.innerHTML = "<p class='content-card'>Aaj ke liye content nahi mil paya.</p>";}
         }
     },
-    
-    decodeHtmlEntities(text) {
-        const textArea = document.createElement('textarea');
-        textArea.innerHTML = text;
-        return textArea.value;
+    decodeHtmlEntities(text) { if (typeof text !== 'string') return ''; const ta = document.createElement('textarea'); ta.innerHTML = text; return ta.value; },
+    displayContent(content, targetEl = document.getElementById('dailyContentArea')) { 
+        if (!targetEl) return; if (targetEl === document.getElementById('dailyContentArea')) targetEl.innerHTML = '';
+        const card = document.createElement('div'); card.className = 'content-card'; let html = '';
+        const contentId = `${content.type}_${(content.question || content.setup || content.text || '').replace(/\W/g, '')}_${Date.now()}`.slice(0,60); 
+
+        if (content.type === 'joke') { html = `<h3>Aaj ka Chutkula (Source: ${content.source || 'N/A'})</h3><p>${this.decodeHtmlEntities(content.setup)}</p>${content.punchline ? `<p><em>${this.decodeHtmlEntities(content.punchline)}</em></p>` : ''}<button id="btn-${contentId}" onclick="app.claimReward('${content.type}', ${this.config.coinsPerJoke}, '${contentId}')">Samajh Gaya! +${this.config.coinsPerJoke} Coins</button>`; }
+        else if (content.type === 'fact') { html = `<h3>Aaj ka Fact (Source: ${content.source || 'N/A'})</h3><p>${this.decodeHtmlEntities(content.text)}</p><button id="btn-${contentId}" onclick="app.claimReward('${content.type}', ${this.config.coinsPerFact}, '${contentId}')">Interesting! +${this.config.coinsPerFact} Coins</button>`; }
+        else if (content.type === 'quiz') { html = `<h3>Aaj ka Quiz (Source: ${content.source || 'N/A'})</h3><p>${this.decodeHtmlEntities(content.question)}</p><div class="options" id="opts-${contentId}">`; content.options.forEach(opt => { html += `<button onclick="app.answerQuiz(this, '${opt.replace(/'/g, "\\'")}', '${content.correctAnswer.replace(/'/g, "\\'")}', '${contentId}')">${this.decodeHtmlEntities(opt)}</button>`; }); html += `</div>`; }
+        card.innerHTML = html; targetEl.appendChild(card); this.checkIfClaimed(contentId);
     },
-
-    displayContent(content) {
-        const contentArea = document.getElementById('dailyContentArea');
-        contentArea.innerHTML = ''; // Clear loader or previous content
-        const card = document.createElement('div');
-        card.className = 'content-card';
-        let html = '';
-
-        if (content.type === 'joke') {
-            html = `<h3>Aaj ka Chutkula (Source: ${content.source || 'Unknown'})</h3>
-                    <p>${this.decodeHtmlEntities(content.setup)}</p>
-                    ${content.punchline ? `<p><em>${this.decodeHtmlEntities(content.punchline)}</em></p>` : ''}
-                    <button onclick="app.claimReward('joke', ${this.config.coinsPerJoke})">Samajh Gaya! +${this.config.coinsPerJoke} Coins</button>`;
-        } else if (content.type === 'fact') {
-            html = `<h3>Aaj ka Fact (Source: ${content.source || 'Unknown'})</h3>
-                    <p>${this.decodeHtmlEntities(content.text)}</p>
-                    <button onclick="app.claimReward('fact', ${this.config.coinsPerFact})">Interesting! +${this.config.coinsPerFact} Coins</button>`;
-        } else if (content.type === 'quiz') {
-            html = `<h3>Aaj ka Quiz (Source: ${content.source || 'Unknown'})</h3>
-                    <p>${this.decodeHtmlEntities(content.question)}</p>
-                    <div class="options">`;
-            content.options.forEach(option => {
-                html += `<button onclick="app.answerQuiz('${option.replace(/'/g, "\\'")}', '${content.correctAnswer.replace(/'/g, "\\'")}')">${this.decodeHtmlEntities(option)}</button>`;
-            });
-            html += `</div>`;
-        }
-        card.innerHTML = html;
-        contentArea.appendChild(card);
+    checkIfClaimed(contentId) { const key = `claimed_${contentId}`; if (localStorage.getItem(key) === 'true') { const btn = document.getElementById(`btn-${contentId}`); if (btn) { btn.disabled = true; btn.innerText = "Pehle hi Claimed!"; } const opts = document.getElementById(`opts-${contentId}`); if (opts) opts.querySelectorAll('button').forEach(b => b.disabled = true); } },
+    claimReward(type, amount, contentId) { if (!this.currentUser) return; const key = `claimed_${contentId}`; if (localStorage.getItem(key) === 'true') { alert("Aap iska reward pehle hi le chuke ho!"); return; } this.currentUser.coins += amount; this.saveUsers(); this.updateUI(); alert(`${amount} coins mil gaye!`); localStorage.setItem(key, 'true'); const btn = document.getElementById(`btn-${contentId}`); if(btn) { btn.disabled = true; btn.innerText = "Claimed!"; } this.updateUserStatsOnAction(type === 'quiz' ? 'quizCompleted' : 'contentViewed'); this.addActivityToFeed(`Claimed ${amount} coins for a ${type}.`);},
+    answerQuiz(btnEl, selected, correct, contentId) { if (!this.currentUser) return; const key = `claimed_${contentId}`; if (localStorage.getItem(key) === 'true') { alert("Is quiz ka jawab de chuke ho!"); return; }
+        let earnedCoins = 0;
+        if (selected === correct) { earnedCoins = this.config.coinsPerQuizCorrect; this.currentUser.coins += earnedCoins; alert(`Sahi Jawab! +${earnedCoins} coins!`); if(btnEl) btnEl.style.backgroundColor = 'lightgreen'; }
+        else { alert(`Galat Jawab! Sahi jawab: ${correct}`); if(btnEl) btnEl.style.backgroundColor = 'lightcoral'; const optsDiv = document.getElementById(`opts-${contentId}`); if(optsDiv) { optsDiv.querySelectorAll('button').forEach(b => { if (b.innerText === correct) b.style.backgroundColor = 'lightgreen'; }); } }
+        this.saveUsers(); this.updateUI(); localStorage.setItem(key, 'true'); const optsDiv = document.getElementById(`opts-${contentId}`); if(optsDiv) optsDiv.querySelectorAll('button').forEach(b => b.disabled = true); this.updateUserStatsOnAction('quizCompleted'); this.addActivityToFeed(`Answered quiz, earned ${earnedCoins} coins.`);
     },
+    rewardsData: [ { id: 'reward1', name: "50 Masti Bonus", cost: 50, icon: '🎁', locked: false }, { id: 'reward2', name: "100 Coin Dhamaka", cost: 100, icon: '🎉', locked: false }, { id: 'reward3', name: "Special Sticker Pack", cost: 250, icon: '🌟', locked: false, comingSoon: true }, { id: 'reward4', name: "Mystery Box", cost: 500, icon: '❓', locked: false, comingSoon: true } ],
+    renderRewards() {
+        const rewardsGrid = document.getElementById('rewardsGrid'); if (!rewardsGrid) return; rewardsGrid.innerHTML = '';
+        this.rewardsData.forEach(reward => {
+            const card = document.createElement('div'); card.className = 'reward-card';
+            const canAfford = this.currentUser && this.currentUser.coins >= reward.cost;
+            const isActuallyLocked = reward.locked || reward.comingSoon; 
+            if (isActuallyLocked) card.classList.add('locked');
 
-    claimReward(contentType, amount) {
-        if (!this.currentUser) return;
-        // Prevent claiming multiple times for same content (simple check)
-        const lastClaimKey = `lastClaim_${contentType}_${localStorage.getItem(this.config.lastFetchDateKey)}`;
-        if (localStorage.getItem(lastClaimKey) === 'true') {
-            alert("Aap iska reward pehle hi le chuke ho!");
-            return;
-        }
-
-        this.currentUser.coins += amount;
-        this.saveUsers();
-        this.updateUI();
-        alert(`${amount} coins aapke account mein aa gaye!`);
-        localStorage.setItem(lastClaimKey, 'true'); // Mark as claimed for today
+            let buttonHTML = `<button class="button-style" onclick="app.redeemReward('${reward.id}', ${reward.cost}, this)" ${isActuallyLocked || !canAfford ? 'disabled' : ''}>Redeem Karo</button>`;
+            if (reward.comingSoon) { buttonHTML = `<span class="coming-soon-tag">Jald Hi Aa Raha Hai!</span>`; }
+            else if (reward.locked && !reward.comingSoon) { buttonHTML = `<span class="coming-soon-tag">Locked! Earn More!</span>`;} 
+            
+            card.innerHTML = ` <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60'><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='40' fill='${isActuallyLocked ? "var(--secondary-color)" : "var(--primary-color)"}'>${reward.icon}</text></svg>" alt="${reward.name}" class="reward-icon" style="${isActuallyLocked ? 'filter: grayscale(100%);' : ''}"> <h4>${reward.name}</h4> <div class="coin-cost">${reward.cost} Coins</div> ${buttonHTML} `;
+            rewardsGrid.appendChild(card);
+        });
+    },
+    redeemReward(rewardId, amount, buttonElement) { 
+        const rewardMessageEl = document.getElementById('rewardMessage'); 
+        const displayMessage = (msg, color) => { if(rewardMessageEl){ rewardMessageEl.innerText = msg; rewardMessageEl.style.color = color; setTimeout(() => { if(rewardMessageEl) rewardMessageEl.innerText = ""; }, 3000);}};
+        if (!this.currentUser) { displayMessage("Pehle login karein!", "var(--danger-color)"); return; }
+        const reward = this.rewardsData.find(r => r.id === rewardId);
+        if(reward && (reward.locked || reward.comingSoon)) { displayMessage("Yeh reward abhi available nahi hai.", "var(--warning-color)"); return; }
+        if (this.currentUser.coins < amount) { displayMessage(`Aapke paas पर्याप्त coins (${amount}) nahi hain!`, "var(--danger-color)"); return; }
         
-        // Disable the button after claiming
-        event.target.disabled = true;
-        event.target.innerText = "Claimed!";
+        this.currentUser.coins -= amount; this.saveUsers(); this.updateUI();
+        displayMessage(`${reward ? reward.name : amount + ' coins'} ka reward successfully redeem! (Simulation)`, "var(--success-color)");
+        if(buttonElement) { buttonElement.disabled = true; buttonElement.innerText = "Redeemed!"; }
+        this.addActivityToFeed(`Redeemed ${reward ? reward.name : amount + ' coin reward'}.`);
+        this.renderRewards(); 
     },
+    addActivityToFeed(activityText) { 
+        if (!this.currentUser) return; const activityFeedEl = document.getElementById('activityFeed');
+        if (activityFeedEl) { const newItem = document.createElement('p'); newItem.className = 'activity-item'; newItem.innerText = `${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}: ${activityText}`; if (activityFeedEl.firstChild) { activityFeedEl.insertBefore(newItem, activityFeedEl.firstChild); } else { activityFeedEl.appendChild(newItem); } while(activityFeedEl.children.length > 5) { activityFeedEl.removeChild(activityFeedEl.lastChild); }}
+    },
+    generateReferralCode(username) { const namePart = username.substring(0, Math.min(username.length, 3)).toUpperCase(); const randomPart = Math.random().toString(36).substring(2, 7).toUpperCase(); return `${namePart}${randomPart}${Date.now().toString().slice(-3)}`; },
+    copyReferralCode() { if (!this.currentUser || !this.currentUser.referralCode) { alert("Pehle login karein."); return; } const code = this.currentUser.referralCode; if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(code).then(() => { alert(`Referral code "${code}" copy ho gaya!`); }).catch(err => { this._manualCopy(code, err); }); } else { this._manualCopy(code, "Clipboard API not available."); } },
+    _manualCopy(code, errReason) { console.warn('Clipboard API error:', errReason); const ta = document.createElement("textarea"); ta.value = code; document.body.appendChild(ta); ta.focus(); ta.select(); try { document.execCommand('copy'); alert(`Referral code "${code}" copy ho gaya (fallback)!`); } catch (err) { alert('Code copy nahi ho paya: ' + code); } document.body.removeChild(ta); },
+    shareOnWhatsApp() { if (!this.currentUser || !this.currentUser.referralCode) { alert("Pehle login karein."); return; } const msg = `Masti Coins app join karo! Mera referral code "${this.currentUser.referralCode}" use karo aur ${this.config.coinsPerReferralReceiver} bonus coins pao! App: ${window.location.href}`; const url = `https://wa.me/?text=${encodeURIComponent(msg)}`; window.open(url, '_blank'); },
+    shareOnTelegram() { if (!this.currentUser || !this.currentUser.referralCode) { alert("Pehle login karein."); return; } const msg = `Masti Coins app join karo! Mera referral code "${this.currentUser.referralCode}" use karo aur ${this.config.coinsPerReferralReceiver} bonus coins pao! App: ${window.location.href}`; const url = `https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(msg)}`; window.open(url, '_blank'); },
+    triggerAdAndReward() { 
+        if (!this.currentUser) { alert("Login zaroori hai."); return; }
+        const adButton = document.getElementById('watchAdButton');
+        const now = Date.now();
+        const lastAdTime = parseInt(localStorage.getItem(this.config.lastAdWatchTimeKey) || '0');
 
-    answerQuiz(selectedAnswer, correctAnswer) {
-        if (!this.currentUser) return;
-        const lastClaimKey = `lastClaim_quiz_${localStorage.getItem(this.config.lastFetchDateKey)}`;
-         if (localStorage.getItem(lastClaimKey) === 'true') {
-            alert("Aap is quiz ka jawab pehle hi de chuke ho!");
+        if (now - lastAdTime < this.config.adWatchCooldown) {
+            const timeLeft = Math.ceil((this.config.adWatchCooldown - (now - lastAdTime)) / 1000);
+            alert(`Thoda intezaar karein! Agla ad ${timeLeft} seconds mein dekh sakte hain.`);
             return;
         }
+        
+        if(adButton) { adButton.disabled = true; adButton.innerText = "Ad Load Ho Raha Hai...";}
+        
+        const adSimulationTime = 7000; 
+        let simTimeLeft = adSimulationTime / 1000;
+        if(adButton) adButton.innerText = `Ad Dekh Rahe Hain... (${simTimeLeft}s)`;
+        // Note: Popunder ad (if script is present) will trigger on user interaction (like this button click).
+        // We are simulating the reward part.
+        alert("Ad shuru ho raha hai... (Popunder ad naye tab mein khul sakta hai). Reward ke liye kuch seconds wait karein.");
 
-        if (selectedAnswer === correctAnswer) {
-            this.currentUser.coins += this.config.coinsPerQuizCorrect;
-            alert(`Sahi Jawab! Aapko ${this.config.coinsPerQuizCorrect} coins mile!`);
-        } else {
-            alert(`Galat Jawab! Sahi jawab tha: ${correctAnswer}`);
-        }
-        this.saveUsers();
-        this.updateUI();
-        localStorage.setItem(lastClaimKey, 'true'); // Mark as attempted
 
-        // Disable all option buttons
-        const optionButtons = document.querySelectorAll('#dailyContentArea .options button');
-        optionButtons.forEach(btn => btn.disabled = true);
-    },
-
-    // --- REFERRAL SYSTEM ---
-    generateReferralCode(username) {
-        // Simple referral code: first 4 letters of username + random 4 digits
-        return username.substring(0, 4).toUpperCase() + Math.floor(1000 + Math.random() * 9000);
-    },
-    copyReferralCode() {
-        if (!this.currentUser) return;
-        const code = this.currentUser.referralCode;
-        navigator.clipboard.writeText(code).then(() => {
-            alert(`Referral code "${code}" copy ho gaya!`);
-        }).catch(err => {
-            alert('Code copy nahi ho paya. Manually kar lijiye: ' + code);
-            console.error('Could not copy text: ', err);
-        });
-    },
-
-    // --- SIMULATED AD ---
-    simulateWatchAd() {
-        if (!this.currentUser) return;
-        alert("Ad chal raha hai... (simulation). Please 10 seconds wait karein.");
-        const adButton = event.target;
-        adButton.disabled = true;
-        adButton.innerText = "Ad Dekh Rahe Hain...";
-
-        setTimeout(() => {
-            this.currentUser.coins += this.config.coinsPerAdWatch;
-            this.saveUsers();
-            this.updateUI();
-            alert(`Ad dekhne ke liye ${this.config.coinsPerAdWatch} coins mile!`);
-            adButton.disabled = false;
-            adButton.innerText = `Watch Ad (Simulated) & Earn ${this.config.coinsPerAdWatch} Coins`;
-        }, 5000); // Simulate 5 second ad
-    },
-
-    // --- LEADERBOARD ---
-    displayLeaderboard() {
-        const leaderboardList = document.getElementById('leaderboardList');
-        leaderboardList.innerHTML = ''; // Clear previous list
-
-        // Create dummy data if no users or few users
-        let displayUsers = [...this.users];
-        if (displayUsers.length < 5) {
-            const dummyNames = ["Player1", "MastiKing", "CoinMaster", "FunUser", "QuizPro"];
-            for (let i = 0; i < 5 - this.users.length; i++) {
-                displayUsers.push({
-                    username: dummyNames[i] || `User${100+i}`,
-                    coins: Math.floor(Math.random() * 500) + 50 // Random coins
-                });
+        const countdownInterval = setInterval(() => {
+            simTimeLeft--;
+            if(adButton) adButton.innerText = `Ad Dekh Rahe Hain... (${simTimeLeft}s)`;
+            if (simTimeLeft <= 0) {
+                clearInterval(countdownInterval);
+                this.currentUser.coins += this.config.coinsPerAdWatch;
+                this.saveUsers();
+                this.updateUI();
+                alert(`Ad dekhne ke liye ${this.config.coinsPerAdWatch} coins mile!`);
+                localStorage.setItem(this.config.lastAdWatchTimeKey, Date.now().toString());
+                this.updateAdButtonState(); 
+                this.addActivityToFeed(`Ad dekha aur ${this.config.coinsPerAdWatch} coins kamaye.`);
             }
-        }
-
-        // Sort users by coins in descending order
-        displayUsers.sort((a, b) => b.coins - a.coins);
-
-        const topN = displayUsers.slice(0, 10); // Show top 10
-
-        topN.forEach((user, index) => {
-            const item = document.createElement('div');
-            item.className = 'leaderboard-item';
-            item.innerHTML = `<span>${index + 1}. ${user.username}</span> <span>${user.coins} Coins</span>`;
-            leaderboardList.appendChild(item);
-        });
+        }, 1000);
     },
-
-    // --- UTILITY ---
-    shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-    }
+    updateAdButtonState() { 
+        const adButton = document.getElementById('watchAdButton');
+        if (!adButton ) { return; } 
+        if (!this.currentUser) { adButton.disabled = true; adButton.innerText = `Login to Watch Ad`; return; }
+        const now = Date.now(); const lastAdTime = parseInt(localStorage.getItem(this.config.lastAdWatchTimeKey) || '0');
+        if (now - lastAdTime >= this.config.adWatchCooldown) { adButton.disabled = false; adButton.innerText = `Ad Dekho & Coins Paao! (+${this.config.coinsPerAdWatch})`; }
+        else { adButton.disabled = true; const timeLeft = Math.ceil((this.config.adWatchCooldown - (now - lastAdTime)) / 1000); adButton.innerText = `Wait Karo (${timeLeft}s)`; setTimeout(() => this.updateAdButtonState(), 1000); }
+    },
+    shuffleArray(array) { for (let i = array.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [array[i], array[j]] = [array[j], array[i]]; } }
 };
 
-// Initialize the app when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     app.init();
 });
-
 </script>
+
+<!-- Adsterra Popunder Ad Code -->
+<script type='text/javascript' src='//pl26757354.profitableratecpm.com/d8/be/d4/d8bed49d67a9b4e12cdbfdf6ee8ad7b5.js'></script>
+
 </body>
-    </html>
+</html>
